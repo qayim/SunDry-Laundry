@@ -172,6 +172,18 @@ $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 		
 	</div>
 </body>
-		
-		
 </html>
+
+<script>
+$(document).ready( function(){
+	$('#all').load('index.php');
+	refresh();
+});
+
+function refresh(){
+	setTimeout(function(){
+		$('#all').load('index.php');
+		refresh();
+	},1000);
+}
+</script>
