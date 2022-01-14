@@ -55,6 +55,7 @@ void loop()
   humidityData = dht.readHumidity();
   temperatureData = dht.readTemperature();
 
+  //incase nan value is retrieve
   if (!isnan(humidityData) && !isnan(temperatureData)) {
     // print value on the serial monitor
     Serial.print("Value humidity: ");
@@ -86,6 +87,7 @@ void Sending_To_phpmyadmindatabase()   //CONNECTING WITH MYSQL
     Serial.println("CONNECTED");
     Serial.println(" ");
     // Make a HTTP request:
+    //send data using get
     Serial.print("GET /testcode2/dht11.php?humidity=");
     client.print("GET /testcode2/dht11.php?humidity=");     //YOUR URL from the file in htdocs
     Serial.println(humidityData);
