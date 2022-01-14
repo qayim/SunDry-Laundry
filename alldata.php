@@ -1,4 +1,5 @@
 <?php 
+//DISPLAY ALL THE DATA IN THE DATABASE
 session_start();
 require_once "pdo.php";
 
