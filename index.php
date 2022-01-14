@@ -1,12 +1,14 @@
 <?php 
 session_start();
-header("Refresh: 60");
+//header("Refresh: 60");
 require_once "pdo.php";
 
+//get the 5 latest data from database
 $stmt = $pdo->query("SELECT * FROM dht11 order by date desc limit 5;");
 	 
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	
+
+//get the last data inserted to the database	
 $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 	 
     $rows1 = $stmts->fetchAll(PDO::FETCH_ASSOC);
@@ -88,6 +90,7 @@ $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 </head>
 <body>
 		<?php 
+	//check whether the last data inserted, weather prediction
 		foreach ($rows1 as $row1) {
 			if($row1['temperature'] > 26.0 && $row1['humidity'] < 50.0){
 				$weatherForecast = "sun";
@@ -108,6 +111,7 @@ $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 				echo('<h1>SunDry Laundry</h1>');
 			echo('</div>');
 			
+			//get the weather forecast pics
 			echo('<div class="weatherPic">');
 				echo('<img src="weather/'.$weatherForecast.'.png" class="complogo">');
 			echo('</div>');
@@ -118,12 +122,14 @@ $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 				echo('</div>');
 			echo('</div>');
 			
+			//display the lastest data for temperature
 			echo('<div class="newestData">');
 				echo('<div class="container pt-2 border bg-white text-dark rounded-3">');
 					echo('<p>Temperature: '.$row1['temperature'].' C</p>');
 				echo('</div>');
 			echo('</div>');
 			
+			//display the latest data for humidity
 			echo('<div class="newestData">');
 				echo('<div class="container pt-2 border bg-white text-dark rounded-3">');
 					echo('<p>Humidity: '.$row1['humidity'].' %</p>');
@@ -136,6 +142,7 @@ $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 			echo('<p>Recent temperature and humidity data</p>');
 			echo('</div>');
 			
+				//determine the weather pic logo for each data retrieved
 				foreach ($rows as $row) {
 					if($row['temperature'] > 26.0 && $row['humidity'] < 50.0){
 						$weatherForecastMini = "sun";
@@ -175,6 +182,8 @@ $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 </html>
 
 <?php
+//for refreshing the page every 1000 miliseconds
+//NOTE: works but makes the website really slow
 //<script>
 //$(document).ready( function(){
 //	$('#all').load('index.php');
