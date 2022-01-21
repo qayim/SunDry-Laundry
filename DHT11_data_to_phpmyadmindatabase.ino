@@ -16,8 +16,8 @@ DHT dht(DHTPIN, DHTTYPE);
 float humidityData;
 float temperatureData;
 
-const char* ssid = "norizan123-Maxis Fibre";//the wifi name *must be exactly the same*
-const char* password = "wrk1699910"; //wifi password
+const char* ssid = "wifiname";//the wifi name *must be exactly the same*
+const char* password = "wifipassword"; //wifi password
 //WiFiClient client;
 char server[] = "192.168.1.10";   //eg: 192.168.0.222 go to config type ipconfig and get the IPv4 address
 
