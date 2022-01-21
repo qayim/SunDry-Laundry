@@ -19,7 +19,7 @@ float temperatureData;
 const char* ssid = "wifiname";//the wifi name *must be exactly the same*
 const char* password = "wifipassword"; //wifi password
 //WiFiClient client;
-char server[] = "192.168.1.10";   //eg: 192.168.0.222 go to config type ipconfig and get the IPv4 address
+char server[] = "IPv4";   //eg: 192.168.0.222 go to config type ipconfig and get the IPv4 address
 
 WiFiClient client;
 
