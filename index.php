@@ -1,27 +1,37 @@
 <?php 
 session_start();
-//header("Refresh: 60");
 require_once "pdo.php";
 
-//get the 5 latest data from database
 $stmt = $pdo->query("SELECT * FROM dht11 order by date desc limit 5;");
 	 
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-//get the last data inserted to the database	
+	
 $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 	 
     $rows1 = $stmts->fetchAll(PDO::FETCH_ASSOC);
+	
+	if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ) {
+		$url="https://";
+	} else {
+		$url="http://";
+		$url.=$_SERVER['HTTP_HOST'];
+		$url.=$_SERVER['REQUEST_URI'];
+		$url;
+	}
+	$page=$url;
+	$sec="5";
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <title>Muhammad Qayim bin Norizan</title>
+		<meta http-equiv="refresh" content="<?php echo $sec; ?>" URL="<?php echo $page;?>"
         <meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 		
@@ -89,8 +99,8 @@ $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 		</style>
 </head>
 <body>
+<div class="container-fluid">
 		<?php 
-	//check whether the last data inserted, weather prediction
 		foreach ($rows1 as $row1) {
 			if($row1['temperature'] > 26.0 && $row1['humidity'] < 50.0){
 				$weatherForecast = "sun";
@@ -105,32 +115,29 @@ $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 				$bg1 = "warning";
 				$warning = "Be ready it might rain anytime";
 			}
-	echo('<div class="container-fluid">');
-	echo('<div class="container-'.$weatherForecast.'">');
+	
+	echo('<div class="container-'.$weatherForecast.'" id="all">');
 			echo('<div class="weatherTitle">');
 				echo('<h1>SunDry Laundry</h1>');
 			echo('</div>');
 			
-			//get the weather forecast pics
-			echo('<div class="weatherPic">');
+			echo('<div class="weatherPic" id="all">');
 				echo('<img src="weather/'.$weatherForecast.'.png" class="complogo">');
 			echo('</div>');
 			
-			echo('<div class="newestData">');
+			echo('<div class="newestData" id="all">');
 				echo('<div class="container pt-2 border bg-'.$bg1.' text-dark rounded-3">');
 					echo('<p>'.$warning.'</p>');
 				echo('</div>');
 			echo('</div>');
 			
-			//display the lastest data for temperature
-			echo('<div class="newestData">');
+			echo('<div class="newestData" id="all">');
 				echo('<div class="container pt-2 border bg-white text-dark rounded-3">');
 					echo('<p>Temperature: '.$row1['temperature'].' C</p>');
 				echo('</div>');
 			echo('</div>');
 			
-			//display the latest data for humidity
-			echo('<div class="newestData">');
+			echo('<div class="newestData" id="all">');
 				echo('<div class="container pt-2 border bg-white text-dark rounded-3">');
 					echo('<p>Humidity: '.$row1['humidity'].' %</p>');
 				echo('</div>');
@@ -142,7 +149,6 @@ $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 			echo('<p>Recent temperature and humidity data</p>');
 			echo('</div>');
 			
-				//determine the weather pic logo for each data retrieved
 				foreach ($rows as $row) {
 					if($row['temperature'] > 26.0 && $row['humidity'] < 50.0){
 						$weatherForecastMini = "sun";
@@ -155,7 +161,7 @@ $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 						$bg="warning";
 					}
 					echo('<div class="col-sm-4">');
-						echo('<div class="data">');
+						echo('<div class="data" id="all">');
 							echo('<div class="container pt-3 pb-1 m-2 my-3 bg-'.$bg.' text-dark rounded-3">');
 							echo('<p><img class="minipic" src="weather/'.$weatherForecastMini.'.png"/>Temperature: '.$row['temperature'].' C Humidity: '.$row['humidity'].' %</p>');
 							echo('<p class="date">'.$row['date'].'</p>');
@@ -177,24 +183,6 @@ $stmts = $pdo->query("SELECT * FROM dht11 order by date desc limit 1;");
 			
 			?>
 		
-	</div>
+</div>
 </body>
 </html>
-
-<?php
-//for refreshing the page every 1000 miliseconds
-//NOTE: works but makes the website really slow
-//<script>
-//$(document).ready( function(){
-//	$('#all').load('index.php');
-//	refresh();
-//});
-
-//function refresh(){
-//	setTimeout(function(){
-//		$('#all').load('index.php');
-//		refresh();
-//	},1000);
-//}
-//</script>
-?>
